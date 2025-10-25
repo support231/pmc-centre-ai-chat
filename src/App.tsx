@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './hooks/useAuth.ts';
 import { AuthProvider } from './components/AuthProvider.tsx';
@@ -9,15 +8,14 @@ import AdminDashboard from './components/AdminDashboard.tsx';
 import { LogoIcon } from './components/Icons.tsx';
 import ApiKeyPrompt from './components/ApiKeyPrompt.tsx';
 
-// FIX: Fix conflicting global declaration for `window.aistudio` by using an inline type.
-// This avoids potential name collisions and ensures consistency with other
-// global type definitions that may exist.
+// FIX: Replaced inline type for `window.aistudio` with a named `AIStudio` interface to resolve declaration conflicts, as suggested by the TypeScript error message. This ensures type compatibility with other potential declarations of `aistudio` in the global scope.
 declare global {
+    interface AIStudio {
+        hasSelectedApiKey: () => Promise<boolean>;
+        openSelectKey: () => Promise<void>;
+    }
     interface Window {
-        aistudio: {
-            hasSelectedApiKey: () => Promise<boolean>;
-            openSelectKey: () => Promise<void>;
-        };
+        aistudio: AIStudio;
     }
 }
 
