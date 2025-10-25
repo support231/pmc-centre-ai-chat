@@ -10,16 +10,16 @@ import { LogoIcon } from './components/Icons';
 import ApiKeyPrompt from './components/ApiKeyPrompt';
 
 // FIX: Fix conflicting global declaration for `window.aistudio`.
-// The `AIStudio` interface was removed and the type for `window.aistudio` is
-// now defined inline. This resolves the "Subsequent property declarations
-// must have the same type" error by avoiding a named interface that could
-// conflict with other global type definitions.
+// The `AIStudio` interface is defined and used for `window.aistudio` to resolve
+// the "Subsequent property declarations must have the same type" error.
+// This ensures consistency with other global type definitions.
 declare global {
+    interface AIStudio {
+        hasSelectedApiKey: () => Promise<boolean>;
+        openSelectKey: () => Promise<void>;
+    }
     interface Window {
-        aistudio: {
-            hasSelectedApiKey: () => Promise<boolean>;
-            openSelectKey: () => Promise<void>;
-        };
+        aistudio: AIStudio;
     }
 }
 
