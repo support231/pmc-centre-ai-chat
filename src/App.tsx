@@ -1,10 +1,28 @@
+
 import React, { useState, useEffect } from 'react';
-import { useAuth, AuthProvider } from './hooks/useAuth';
+import { useAuth } from './hooks/useAuth';
+import { AuthProvider } from './components/AuthProvider';
 import ChatView from './components/ChatView';
 import LoginView from './components/LoginView';
 import RegisterView from './components/RegisterView';
 import AdminDashboard from './components/AdminDashboard';
 import { LogoIcon } from './components/Icons';
+import ApiKeyPrompt from './components/ApiKeyPrompt';
+
+// FIX: Fix conflicting global declaration for `window.aistudio`.
+// The `AIStudio` interface was removed and the type for `window.aistudio` is
+// now defined inline. This resolves the "Subsequent property declarations
+// must have the same type" error by avoiding a named interface that could
+// conflict with other global type definitions.
+declare global {
+    interface Window {
+        aistudio: {
+            hasSelectedApiKey: () => Promise<boolean>;
+            openSelectKey: () => Promise<void>;
+        };
+    }
+}
+
 
 type View = 'login' | 'register' | 'app' | 'admin';
 
@@ -31,16 +49,16 @@ const AppContent: React.FC = () => {
         }
         if (view === 'app' && user) {
             return (
-                <div className="h-screen w-screen bg-pmc-light dark:bg-slate-900 text-slate-800 dark:text-slate-200 flex flex-col">
+                <div className="h-screen w-screen bg-pmc-gray dark:bg-slate-900 text-slate-800 dark:text-slate-200 flex flex-col">
                     <header className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm">
                         <div className="flex items-center gap-3">
-                            <LogoIcon className="h-10 w-10 text-pmc-primary" />
-                            <h1 className="text-xl font-bold text-pmc-primary dark:text-sky-400">PMC CENTRE AI</h1>
+                            <LogoIcon className="h-8 w-8 text-pmc-blue" />
+                            <h1 className="text-xl font-bold text-pmc-blue dark:text-sky-400">PMC CENTRE AI</h1>
                         </div>
                         {isAdmin && (
                             <button
                                 onClick={() => setAppView(appView === 'chat' ? 'admin' : 'chat')}
-                                className="px-4 py-2 text-sm font-medium rounded-md bg-pmc-accent text-white hover:bg-pmc-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
+                                className="px-4 py-2 text-sm font-medium rounded-md bg-sky-600 text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
                             >
                                 {appView === 'chat' ? 'Admin Dashboard' : 'Go to Chat'}
                             </button>
@@ -59,6 +77,56 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => {
+    const [apiKeyStatus, setApiKeyStatus] = useState<'loading' | 'ready' | 'needed'>('loading');
+
+    useEffect(() => {
+        // Check if an API key has been selected when the app loads.
+        const checkKey = async () => {
+            try {
+                // The window.aistudio object is provided by the execution environment.
+                const hasKey = await window.aistudio.hasSelectedApiKey();
+                setApiKeyStatus(hasKey ? 'ready' : 'needed');
+            } catch (error) {
+                console.error("Could not check for API key, assuming it's needed.", error);
+                setApiKeyStatus('needed'); // Fallback if aistudio fails
+            }
+        };
+
+        checkKey();
+
+        // Listen for events indicating the API key has become invalid.
+        const handleInvalidKey = () => setApiKeyStatus('needed');
+        window.addEventListener('invalidApiKey', handleInvalidKey);
+
+        return () => {
+            window.removeEventListener('invalidApiKey', handleInvalidKey);
+        };
+    }, []);
+
+    const handleSelectKey = async () => {
+        try {
+            await window.aistudio.openSelectKey();
+            setApiKeyStatus('ready'); // Optimistically assume key selection was successful.
+        } catch (error) {
+            console.error("Failed to open API key selection:", error);
+        }
+    };
+    
+    // Show a loading indicator while checking for the key.
+    if (apiKeyStatus === 'loading') {
+        return (
+            <div className="h-screen w-screen flex items-center justify-center bg-pmc-gray dark:bg-slate-900">
+                <LogoIcon className="h-16 w-16 text-pmc-blue animate-pulse" />
+            </div>
+        );
+    }
+
+    // If the key is needed, show the prompt.
+    if (apiKeyStatus === 'needed') {
+        return <ApiKeyPrompt onSelectKey={handleSelectKey} />;
+    }
+    
+    // Once the key is ready, render the main application.
     return (
         <AuthProvider>
             <AppContent />
