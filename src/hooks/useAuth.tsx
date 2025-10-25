@@ -1,3 +1,4 @@
+// Fix: Replaced corrupted file content with a valid implementation for the authentication context.
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { User, Chat, Message } from '../types';
 import * as api from '../services/apiService';
