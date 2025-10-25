@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { LogoIcon } from './Icons';
+import { useAuth } from '../hooks/useAuth.ts';
+import { LogoIcon } from './Icons.tsx';
 
 interface RegisterViewProps {
     onSwitchToLogin: () => void;
@@ -33,17 +33,17 @@ const RegisterView: React.FC<RegisterViewProps> = ({ onSwitchToLogin }) => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-pmc-light dark:bg-slate-900 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-pmc-gray dark:bg-slate-900 p-4">
             <div className="w-full max-w-md bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg">
                 <div className="flex flex-col items-center mb-6">
-                    <LogoIcon className="h-16 w-16 text-pmc-primary mb-2" />
-                    <h1 className="text-2xl font-bold text-pmc-primary dark:text-sky-400">Create Your Account</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-sm">Join the PMC CENTRE AI Chat Beta</p>
+                    <LogoIcon className="h-16 w-16 text-pmc-blue mb-2" />
+                    <h1 className="text-2xl font-bold text-pmc-blue dark:text-sky-400">Join the Beta</h1>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm">Create an account for PMC CENTRE AI Chat</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <InputField label="Full Name" id="name" type="text" value={name} onChange={setName} required />
-                    <InputField label="Email" id="email" type="email" value={email} onChange={setEmail} required />
+                    <InputField label="Company Email" id="email" type="email" value={email} onChange={setEmail} required />
                     <InputField label="Company Name" id="company" type="text" value={company} onChange={setCompany} required />
                     <InputField label="Country" id="country" type="text" value={country} onChange={setCountry} required />
 
@@ -52,7 +52,7 @@ const RegisterView: React.FC<RegisterViewProps> = ({ onSwitchToLogin }) => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-pmc-accent text-white p-3 rounded-md font-semibold hover:bg-pmc-accent-dark disabled:bg-teal-400 transition-colors"
+                        className="w-full bg-sky-600 text-white p-3 rounded-md font-semibold hover:bg-sky-700 disabled:bg-sky-400 transition-colors"
                     >
                         {isLoading ? 'Creating Account...' : 'Register'}
                     </button>
@@ -60,7 +60,7 @@ const RegisterView: React.FC<RegisterViewProps> = ({ onSwitchToLogin }) => {
 
                 <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
                     Already have an account?{' '}
-                    <button onClick={onSwitchToLogin} className="font-medium text-pmc-accent hover:underline">
+                    <button onClick={onSwitchToLogin} className="font-medium text-sky-600 hover:underline">
                         Login
                     </button>
                 </p>
@@ -88,7 +88,7 @@ const InputField: React.FC<InputFieldProps> = ({ label, id, type, value, onChang
             id={id}
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-md bg-slate-50 dark:bg-slate-700 focus:ring-2 focus:ring-teal-500 focus:outline-none"
+            className="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-md bg-slate-50 dark:bg-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none"
             required={required}
         />
     </div>
