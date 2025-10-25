@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { LogoIcon } from './Icons';
+import { useAuth } from '../hooks/useAuth.ts';
+import { LogoIcon } from './Icons.tsx';
 
 interface LoginViewProps {
     onSwitchToRegister: () => void;
@@ -24,11 +24,11 @@ const LoginView: React.FC<LoginViewProps> = ({ onSwitchToRegister }) => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-pmc-light dark:bg-slate-900 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-pmc-gray dark:bg-slate-900 p-4">
             <div className="w-full max-w-md bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg">
                 <div className="flex flex-col items-center mb-6">
-                    <LogoIcon className="h-16 w-16 text-pmc-primary mb-2" />
-                    <h1 className="text-2xl font-bold text-pmc-primary dark:text-sky-400">Welcome Back</h1>
+                    <LogoIcon className="h-16 w-16 text-pmc-blue mb-2" />
+                    <h1 className="text-2xl font-bold text-pmc-blue dark:text-sky-400">Welcome Back</h1>
                     <p className="text-slate-500 dark:text-slate-400 text-sm">Log in to the PMC CENTRE AI Chat</p>
                 </div>
 
@@ -42,7 +42,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onSwitchToRegister }) => {
                             id="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-md bg-slate-50 dark:bg-slate-700 focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                            className="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-md bg-slate-50 dark:bg-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none"
                             placeholder="you@company.com"
                             required
                         />
@@ -53,7 +53,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onSwitchToRegister }) => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-pmc-accent text-white p-3 rounded-md font-semibold hover:bg-pmc-accent-dark disabled:bg-teal-400 transition-colors"
+                        className="w-full bg-sky-600 text-white p-3 rounded-md font-semibold hover:bg-sky-700 disabled:bg-sky-400 transition-colors"
                     >
                         {isLoading ? 'Logging In...' : 'Login'}
                     </button>
@@ -61,7 +61,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onSwitchToRegister }) => {
 
                 <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
                     Don't have an account?{' '}
-                    <button onClick={onSwitchToRegister} className="font-medium text-pmc-accent hover:underline">
+                    <button onClick={onSwitchToRegister} className="font-medium text-sky-600 hover:underline">
                         Register for Beta
                     </button>
                 </p>
