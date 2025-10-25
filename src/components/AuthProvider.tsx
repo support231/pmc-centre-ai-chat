@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { User, Chat } from '../types';
-import { AuthContext, AuthContextType } from '../hooks/useAuth';
+import { User, Chat } from '../types.ts';
+import { AuthContext, AuthContextType } from '../hooks/useAuth.ts';
 
 // Mock DB keys
 const USERS_DB_KEY = 'pmc_users_db';
