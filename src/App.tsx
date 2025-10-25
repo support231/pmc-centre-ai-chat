@@ -1,25 +1,23 @@
 
 import React, { useState, useEffect } from 'react';
-import { useAuth } from './hooks/useAuth';
-import { AuthProvider } from './components/AuthProvider';
-import ChatView from './components/ChatView';
-import LoginView from './components/LoginView';
-import RegisterView from './components/RegisterView';
-import AdminDashboard from './components/AdminDashboard';
-import { LogoIcon } from './components/Icons';
-import ApiKeyPrompt from './components/ApiKeyPrompt';
+import { useAuth } from './hooks/useAuth.ts';
+import { AuthProvider } from './components/AuthProvider.tsx';
+import ChatView from './components/ChatView.tsx';
+import LoginView from './components/LoginView.tsx';
+import RegisterView from './components/RegisterView.tsx';
+import AdminDashboard from './components/AdminDashboard.tsx';
+import { LogoIcon } from './components/Icons.tsx';
+import ApiKeyPrompt from './components/ApiKeyPrompt.tsx';
 
-// FIX: Fix conflicting global declaration for `window.aistudio`.
-// The `AIStudio` interface is defined and used for `window.aistudio` to resolve
-// the "Subsequent property declarations must have the same type" error.
-// This ensures consistency with other global type definitions.
+// FIX: Fix conflicting global declaration for `window.aistudio` by using an inline type.
+// This avoids potential name collisions and ensures consistency with other
+// global type definitions that may exist.
 declare global {
-    interface AIStudio {
-        hasSelectedApiKey: () => Promise<boolean>;
-        openSelectKey: () => Promise<void>;
-    }
     interface Window {
-        aistudio: AIStudio;
+        aistudio: {
+            hasSelectedApiKey: () => Promise<boolean>;
+            openSelectKey: () => Promise<void>;
+        };
     }
 }
 
