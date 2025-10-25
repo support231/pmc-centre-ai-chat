@@ -1,0 +1,5 @@
+{
+  "name": "PMC CENTRE AI Chat",
+  "description": "An AI-powered chat application providing expert guidance on Paper Machine Clothing (PMC). It offers technical support for forming, press felt, and dryer fabrics, leveraging web search to provide accurate and cited answers.",
+  "requestFramePermissions": []
+}
